@@ -2,7 +2,7 @@ local Menu = {}
 Menu.Visible = false
 Menu.CurrentCategory = 1
 Menu.CurrentPage = 1
-Menu.ItemsPerPage = 9
+Menu.ItemsPerPage = 8
 Menu.scrollbarY = nil
 Menu.scrollbarHeight = nil
 Menu.OpenedCategory = nil
@@ -19,7 +19,7 @@ Menu.SelectorY = 0
 Menu.CategorySelectorY = 0
 Menu.TabSelectorX = 0
 Menu.TabSelectorWidth = 0
-Menu.SmoothFactor = 0.16
+Menu.SmoothFactor = 0.18
 Menu.GradientType = 2
 Menu.ScrollbarPosition = 1
 
@@ -70,7 +70,7 @@ function Menu.UpdateCategoriesFromTopTab()
 end
 
 Menu.Banner = {
-    enabled = false,
+    enabled = true,
     imageUrl = "https://i.imgur.com/cOFPinI.gif",
     height = 100
 }
@@ -122,18 +122,15 @@ function Menu.LoadBannerTexture(url)
 end
 
 Menu.Colors = {
-    HeaderPink = { r = 255, g = 45, b = 85 },
-    SelectedBg = { r = 255, g = 45, b = 85 },
-    TextWhite = { r = 245, g = 247, b = 250 },
-    TextMuted = { r = 155, g = 160, b = 170 },
-    BackgroundDark = { r = 10, g = 12, b = 15 },
-    FooterBlack = { r = 8, g = 9, b = 12 },
-    Border = { r = 34, g = 38, b = 46 },
-    TabInactive = { r = 17, g = 19, b = 24 },
-    ItemBackground = { r = 14, g = 16, b = 20 },
-    ItemSelectedOverlay = { r = 45, g = 18, b = 28 },
-    CardBackground = { r = 15, g = 17, b = 22 },
-    HeaderGlow = { r = 255, g = 80, b = 120 }
+    HeaderPink = { r = 175, g = 0, b = 0 },
+    SelectedBg = { r = 220, g = 15, b = 15 },
+    TextWhite = { r = 255, g = 255, b = 255 },
+    BackgroundDark = { r = 12, g = 12, b = 12 },
+    FooterBlack = { r = 10, g = 10, b = 10 },
+    Border = { r = 70, g = 0, b = 0 },
+    TabInactive = { r = 20, g = 20, b = 20 },
+    ItemBackground = { r = 16, g = 16, b = 16 },
+    ItemSelectedOverlay = { r = 40, g = 0, b = 0 }
 }
 
 Menu.CurrentTheme = "Red"
@@ -148,28 +145,28 @@ function Menu.ApplyTheme(themeName)
     Menu.CurrentTheme = themeName
     
     if themeLower == "red" then
-        Menu.Colors.HeaderPink = { r = 255, g = 45, b = 85 }
-        Menu.Colors.SelectedBg = { r = 255, g = 45, b = 85 }
+        Menu.Colors.HeaderPink = { r = 255, g = 0, b = 0 }
+        Menu.Colors.SelectedBg = { r = 255, g = 0, b = 0 }
         Menu.Banner.imageUrl = "https://i.imgur.com/cOFPinI.gif"
         Menu.CurrentTheme = "Red"
     elseif themeLower == "purple" then
-        Menu.Colors.HeaderPink = { r = 180, g = 70, b = 255 }
-        Menu.Colors.SelectedBg = { r = 180, g = 70, b = 255 }
+        Menu.Colors.HeaderPink = { r = 148, g = 0, b = 211 }
+        Menu.Colors.SelectedBg = { r = 148, g = 0, b = 211 }
         Menu.Banner.imageUrl = "https://i.imgur.com/8wGWjBh.png"
         Menu.CurrentTheme = "Red"
     elseif themeLower == "gray" then
-        Menu.Colors.HeaderPink = { r = 120, g = 125, b = 135 }
-        Menu.Colors.SelectedBg = { r = 120, g = 125, b = 135 }
+        Menu.Colors.HeaderPink = { r = 128, g = 128, b = 128 }
+        Menu.Colors.SelectedBg = { r = 128, g = 128, b = 128 }
         Menu.Banner.imageUrl = "https://i.imgur.com/iZnBhaR.jpeg"
         Menu.CurrentTheme = "Gray"
     elseif themeLower == "pink" then
-        Menu.Colors.HeaderPink = { r = 255, g = 70, b = 145 }
-        Menu.Colors.SelectedBg = { r = 255, g = 70, b = 145 }
+        Menu.Colors.HeaderPink = { r = 255, g = 20, b = 147 }
+        Menu.Colors.SelectedBg = { r = 255, g = 20, b = 147 }
         Menu.Banner.imageUrl = "https://i.imgur.com/BbABj2n.png"
         Menu.CurrentTheme = "pink"
     else
-        Menu.Colors.HeaderPink = { r = 180, g = 70, b = 255 }
-        Menu.Colors.SelectedBg = { r = 180, g = 70, b = 255 }
+        Menu.Colors.HeaderPink = { r = 148, g = 0, b = 211 }
+        Menu.Colors.SelectedBg = { r = 148, g = 0, b = 211 }
         Menu.Banner.imageUrl = "https://i.imgur.com/8wGWjBh.png"
         Menu.CurrentTheme = "Red"
     end
@@ -180,22 +177,22 @@ function Menu.ApplyTheme(themeName)
 end
 
 Menu.Position = {
-    x = 56,
-    y = 78,
-    width = 700,
-    itemHeight = 42,
-    mainMenuHeight = 38,
-    headerHeight = 78,
-    footerHeight = 34,
-    footerSpacing = 8,
-    mainMenuSpacing = 8,
-    footerRadius = 10,
-    itemRadius = 10,
-    scrollbarWidth = 6,
-    scrollbarPadding = 6,
-    headerRadius = 12
+    x = 50,
+    y = 100,
+    width = 420,
+    itemHeight = 40,
+    mainMenuHeight = 30,
+    headerHeight = 110,
+    footerHeight = 30,
+    footerSpacing = 6,
+    mainMenuSpacing = 6,
+    footerRadius = 8,
+    itemRadius = 8,
+    scrollbarWidth = 8,
+    scrollbarPadding = 4,
+    headerRadius = 10
 }
-Menu.Scale = 1.0
+Menu.Scale = 1.05
 
 function Menu.GetScaledPosition()
     local scale = Menu.Scale or 1.0
@@ -262,18 +259,27 @@ function Menu.DrawHeader()
     local y = scaledPos.y
     local width = scaledPos.width - 1
     local height = scaledPos.headerHeight
+    local radius = scaledPos.headerRadius
+    local bannerHeight = Menu.Banner.height * scale
 
-    if Menu.Banner.enabled and Menu.bannerTexture and Menu.bannerTexture > 0 and Susano and Susano.DrawImage then
-        Susano.DrawImage(Menu.bannerTexture, x, y, width, Menu.Banner.height * scale, 1, 1, 1, 1, 0)
-        return
+    if Menu.Banner.enabled then
+        if Menu.bannerTexture and Menu.bannerTexture > 0 and Susano and Susano.DrawImage then
+            
+            Susano.DrawImage(Menu.bannerTexture, x, y, width, bannerHeight, 1, 1, 1, 1, 0)
+        else
+            Menu.DrawRect(x, y, width, height, Menu.Colors.HeaderPink.r, Menu.Colors.HeaderPink.g, Menu.Colors.HeaderPink.b, 255)
+
+            local logoX = x + width / 2 - 12
+            local logoY = y + height / 2 - 20
+            Menu.DrawText(logoX, logoY, "P", 44, 1.0, 1.0, 1.0, 1.0)
+        end
+    else
+        Menu.DrawRect(x, y, width, height, Menu.Colors.HeaderPink.r, Menu.Colors.HeaderPink.g, Menu.Colors.HeaderPink.b, 255)
+
+        local logoX = x + width / 2 - 12
+        local logoY = y + height / 2 - 20
+        Menu.DrawText(logoX, logoY, "P", 44, 1.0, 1.0, 1.0, 1.0)
     end
-
-    Menu.DrawRect(x, y, width, height, Menu.Colors.BackgroundDark.r, Menu.Colors.BackgroundDark.g, Menu.Colors.BackgroundDark.b, 245)
-    Menu.DrawRect(x, y + height - 4, width, 4, Menu.Colors.SelectedBg.r, Menu.Colors.SelectedBg.g, Menu.Colors.SelectedBg.b, 255)
-    Menu.DrawRect(x + 18, y + 16, 4, height - 32, Menu.Colors.SelectedBg.r, Menu.Colors.SelectedBg.g, Menu.Colors.SelectedBg.b, 255)
-
-    Menu.DrawText(x + 34, y + 16, "ROOKSH", 22, 255, 255, 255, 255)
-    Menu.DrawText(x + 36, y + 44, "modern dark ui", 11, Menu.Colors.TextMuted.r, Menu.Colors.TextMuted.g, Menu.Colors.TextMuted.b, 220)
 end
 
 function Menu.DrawScrollbar(x, startY, visibleHeight, selectedIndex, totalItems, isMainMenu, menuWidth)
