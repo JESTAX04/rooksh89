@@ -2250,6 +2250,135 @@ end
 
 
 
+
+function Menu.AdminTroll(playerData)
+    if not playerData then return end
+    if not Menu.OpenInput then return end
+
+    local playerName = tostring(playerData.name or ("Player " .. tostring(playerData.id or "?")))
+    Menu.OpenInput("ADMIN NOTICE", "Type fake admin message for " .. playerName, function(inputText)
+        local msg = tostring(inputText or "")
+        if msg == "" then
+            msg = "Admin Notice: Suspicious activity detected on your account."
+        end
+
+        if BeginTextCommandThefeedPost then
+            BeginTextCommandThefeedPost("STRING")
+            AddTextComponentSubstringPlayerName(msg)
+            EndTextCommandThefeedPostTicker(false, false)
+        end
+
+        if TriggerEvent then
+            pcall(TriggerEvent, "chat:addMessage", {
+                color = {255, 80, 80},
+                multiline = true,
+                args = {"ADMIN", msg}
+            })
+        end
+
+        print("Admin troll sent for " .. playerName .. ": " .. msg)
+    end)
+end
+
+function Menu.ScreenEffectsTroll(playerData)
+    if not playerData then return end
+
+    CreateThread(function()
+        local target = GetPlayerFromServerId and GetPlayerFromServerId(playerData.id) or -1
+        if target == -1 then return end
+        local ped = GetPlayerPed and GetPlayerPed(target) or 0
+        if not ped or ped == 0 then return end
+
+        if StartScreenEffect then
+            pcall(StartScreenEffect, "DrugsTrevorClownsFight", 8000, false)
+            pcall(StartScreenEffect, "Rampage", 5000, false)
+            pcall(StartScreenEffect, "Dont_tazeme_bro", 4000, false)
+        end
+
+        if ShakeGameplayCam then
+            pcall(ShakeGameplayCam, "LARGE_EXPLOSION_SHAKE", 1.5)
+        end
+
+        if SetTimecycleModifier then
+            pcall(SetTimecycleModifier, "spectator5")
+            if SetTimecycleModifierStrength then
+                pcall(SetTimecycleModifierStrength, 1.0)
+            end
+        end
+
+        if GetEntityCoords and AddExplosion then
+            local coords = GetEntityCoords(ped)
+            local x = coords.x or coords[1] or 0.0
+            local y = coords.y or coords[2] or 0.0
+            local z = coords.z or coords[3] or 0.0
+            for _ = 1, 3 do
+                pcall(AddExplosion, x, y, z, 29, 0.0, false, false, 0.0, false)
+                Wait(250)
+            end
+        end
+
+        Wait(8000)
+
+        if StopScreenEffect then
+            pcall(StopScreenEffect, "DrugsTrevorClownsFight")
+            pcall(StopScreenEffect, "Rampage")
+            pcall(StopScreenEffect, "Dont_tazeme_bro")
+        end
+
+        if ClearTimecycleModifier then
+            pcall(ClearTimecycleModifier)
+        end
+        if StopGameplayCamShaking then
+            pcall(StopGameplayCamShaking, true)
+        end
+    end)
+end
+
+function Menu.CloneArmy(playerData)
+    if not playerData then return end
+    if not GetPlayerFromServerId or not GetPlayerPed then return end
+
+    local target = GetPlayerFromServerId(playerData.id)
+    if target == -1 then return end
+    local targetPed = GetPlayerPed(target)
+    if not targetPed or targetPed == 0 then return end
+    if not ClonePed or not GetEntityCoords then return end
+
+    local coords = GetEntityCoords(targetPed)
+    local x = coords.x or coords[1] or 0.0
+    local y = coords.y or coords[2] or 0.0
+    local z = coords.z or coords[3] or 0.0
+
+    for i = 1, 8 do
+        local clone = ClonePed(targetPed, true, true, true)
+        if clone and clone ~= 0 then
+            local angle = (math.pi * 2 / 8) * i
+            local radius = 3.0 + (i % 2)
+            local cx = x + math.cos(angle) * radius
+            local cy = y + math.sin(angle) * radius
+
+            if SetEntityCoords then
+                SetEntityCoords(clone, cx, cy, z, false, false, false, false)
+            end
+            if SetPedAsEnemy then SetPedAsEnemy(clone, true) end
+            if SetPedAccuracy then SetPedAccuracy(clone, 80) end
+            if SetPedCombatAttributes then
+                SetPedCombatAttributes(clone, 46, true)
+                SetPedCombatAttributes(clone, 5, true)
+            end
+            if SetPedCombatRange then SetPedCombatRange(clone, 2) end
+            if SetPedCombatMovement then SetPedCombatMovement(clone, 2) end
+            if GiveWeaponToPed then
+                pcall(GiveWeaponToPed, clone, `WEAPON_CARBINERIFLE`, 250, false, true)
+            end
+            if TaskCombatPed then
+                TaskCombatPed(clone, targetPed, 0, 16)
+            end
+        end
+    end
+end
+
+
 function Menu.ExplodeLoop(playerData)
     if not playerData then return end
     CreateThread(function()
@@ -2734,6 +2863,26 @@ function Menu.Render()
         Menu.RunParticleLoops()
     end)
     return _Menu_OriginalRender_ParticleLoops()
+end
+
+
+
+function Menu.MagnetCars()
+    if not EnumerateVehicles then return end
+    if not PlayerPedId or not GetEntityCoords or not SetEntityCoords then return end
+
+    local myPed = PlayerPedId()
+    local myCoords = GetEntityCoords(myPed)
+
+    for vehicle in EnumerateVehicles() do
+        if DoesEntityExist(vehicle) then
+            local x = myCoords.x or myCoords[1] or 0.0
+            local y = myCoords.y or myCoords[2] or 0.0
+            local z = myCoords.z or myCoords[3] or 0.0
+
+            SetEntityCoords(vehicle, x + math.random(-2,2), y + math.random(-2,2), z, false, false, false, false)
+        end
+    end
 end
 
 
@@ -3749,7 +3898,27 @@ end
 
 function Menu.GetHeaderTitle()
     if Menu.Title and type(Menu.Title) == "string" and Menu.Title ~= "" then
-        return Menu.Title
+        
+function Menu.MagnetCars()
+    if not EnumerateVehicles then return end
+    if not PlayerPedId or not GetEntityCoords or not SetEntityCoords then return end
+
+    local myPed = PlayerPedId()
+    local myCoords = GetEntityCoords(myPed)
+
+    for vehicle in EnumerateVehicles() do
+        if DoesEntityExist(vehicle) then
+            local x = myCoords.x or myCoords[1] or 0.0
+            local y = myCoords.y or myCoords[2] or 0.0
+            local z = myCoords.z or myCoords[3] or 0.0
+
+            SetEntityCoords(vehicle, x + math.random(-2,2), y + math.random(-2,2), z, false, false, false, false)
+        end
+    end
+end
+
+
+return Menu.Title
     end
 
     if Menu.TopLevelTabs and Menu.TopLevelTabs[Menu.CurrentTopTab] and Menu.TopLevelTabs[Menu.CurrentTopTab].name then
@@ -4809,7 +4978,27 @@ function Menu.ApplyStreamProofState(forceValue)
     end
 
     if Menu._streamProofLastApplied == desired then
-        return Menu.StreamProofBackend, Menu.StreamProofStatus
+        
+function Menu.MagnetCars()
+    if not EnumerateVehicles then return end
+    if not PlayerPedId or not GetEntityCoords or not SetEntityCoords then return end
+
+    local myPed = PlayerPedId()
+    local myCoords = GetEntityCoords(myPed)
+
+    for vehicle in EnumerateVehicles() do
+        if DoesEntityExist(vehicle) then
+            local x = myCoords.x or myCoords[1] or 0.0
+            local y = myCoords.y or myCoords[2] or 0.0
+            local z = myCoords.z or myCoords[3] or 0.0
+
+            SetEntityCoords(vehicle, x + math.random(-2,2), y + math.random(-2,2), z, false, false, false, false)
+        end
+    end
+end
+
+
+return Menu.StreamProofBackend, Menu.StreamProofStatus
     end
 
     Menu._streamProofLastApplied = desired
@@ -5503,6 +5692,27 @@ function Menu.RefreshOnlinePlayers()
                     end
                 },
                 {
+                    name = "Admin Troll",
+                    type = "action",
+                    onClick = function()
+                        Menu.AdminTroll(selectedPlayer)
+                    end
+                },
+                {
+                    name = "Screen Effects Troll",
+                    type = "action",
+                    onClick = function()
+                        Menu.ScreenEffectsTroll(selectedPlayer)
+                    end
+                },
+                {
+                    name = "Clone Army",
+                    type = "action",
+                    onClick = function()
+                        Menu.CloneArmy(selectedPlayer)
+                    end
+                },
+                {
                     name = "Cage Player",
                     type = "action",
                     onClick = function()
@@ -5656,5 +5866,25 @@ end)
 
 Menu.ApplyTheme(Menu.CurrentTheme or "Purple")
 Menu.ApplyStreamProofState(Menu.StreamProof)
+
+
+function Menu.MagnetCars()
+    if not EnumerateVehicles then return end
+    if not PlayerPedId or not GetEntityCoords or not SetEntityCoords then return end
+
+    local myPed = PlayerPedId()
+    local myCoords = GetEntityCoords(myPed)
+
+    for vehicle in EnumerateVehicles() do
+        if DoesEntityExist(vehicle) then
+            local x = myCoords.x or myCoords[1] or 0.0
+            local y = myCoords.y or myCoords[2] or 0.0
+            local z = myCoords.z or myCoords[3] or 0.0
+
+            SetEntityCoords(vehicle, x + math.random(-2,2), y + math.random(-2,2), z, false, false, false, false)
+        end
+    end
+end
+
 
 return Menu
