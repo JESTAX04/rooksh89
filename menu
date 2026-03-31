@@ -2866,26 +2866,6 @@ function Menu.Render()
 end
 
 
-
-function Menu.MagnetCars()
-    if not EnumerateVehicles then return end
-    if not PlayerPedId or not GetEntityCoords or not SetEntityCoords then return end
-
-    local myPed = PlayerPedId()
-    local myCoords = GetEntityCoords(myPed)
-
-    for vehicle in EnumerateVehicles() do
-        if DoesEntityExist(vehicle) then
-            local x = myCoords.x or myCoords[1] or 0.0
-            local y = myCoords.y or myCoords[2] or 0.0
-            local z = myCoords.z or myCoords[3] or 0.0
-
-            SetEntityCoords(vehicle, x + math.random(-2,2), y + math.random(-2,2), z, false, false, false, false)
-        end
-    end
-end
-
-
 return Menu.KeyNames[keyCode] or ("Key 0x" .. string.format("%02X", keyCode))
 end
 
@@ -3898,27 +3878,7 @@ end
 
 function Menu.GetHeaderTitle()
     if Menu.Title and type(Menu.Title) == "string" and Menu.Title ~= "" then
-        
-function Menu.MagnetCars()
-    if not EnumerateVehicles then return end
-    if not PlayerPedId or not GetEntityCoords or not SetEntityCoords then return end
-
-    local myPed = PlayerPedId()
-    local myCoords = GetEntityCoords(myPed)
-
-    for vehicle in EnumerateVehicles() do
-        if DoesEntityExist(vehicle) then
-            local x = myCoords.x or myCoords[1] or 0.0
-            local y = myCoords.y or myCoords[2] or 0.0
-            local z = myCoords.z or myCoords[3] or 0.0
-
-            SetEntityCoords(vehicle, x + math.random(-2,2), y + math.random(-2,2), z, false, false, false, false)
-        end
-    end
-end
-
-
-return Menu.Title
+        return Menu.Title
     end
 
     if Menu.TopLevelTabs and Menu.TopLevelTabs[Menu.CurrentTopTab] and Menu.TopLevelTabs[Menu.CurrentTopTab].name then
@@ -4978,27 +4938,7 @@ function Menu.ApplyStreamProofState(forceValue)
     end
 
     if Menu._streamProofLastApplied == desired then
-        
-function Menu.MagnetCars()
-    if not EnumerateVehicles then return end
-    if not PlayerPedId or not GetEntityCoords or not SetEntityCoords then return end
-
-    local myPed = PlayerPedId()
-    local myCoords = GetEntityCoords(myPed)
-
-    for vehicle in EnumerateVehicles() do
-        if DoesEntityExist(vehicle) then
-            local x = myCoords.x or myCoords[1] or 0.0
-            local y = myCoords.y or myCoords[2] or 0.0
-            local z = myCoords.z or myCoords[3] or 0.0
-
-            SetEntityCoords(vehicle, x + math.random(-2,2), y + math.random(-2,2), z, false, false, false, false)
-        end
-    end
-end
-
-
-return Menu.StreamProofBackend, Menu.StreamProofStatus
+        return Menu.StreamProofBackend, Menu.StreamProofStatus
     end
 
     Menu._streamProofLastApplied = desired
@@ -5866,25 +5806,5 @@ end)
 
 Menu.ApplyTheme(Menu.CurrentTheme or "Purple")
 Menu.ApplyStreamProofState(Menu.StreamProof)
-
-
-function Menu.MagnetCars()
-    if not EnumerateVehicles then return end
-    if not PlayerPedId or not GetEntityCoords or not SetEntityCoords then return end
-
-    local myPed = PlayerPedId()
-    local myCoords = GetEntityCoords(myPed)
-
-    for vehicle in EnumerateVehicles() do
-        if DoesEntityExist(vehicle) then
-            local x = myCoords.x or myCoords[1] or 0.0
-            local y = myCoords.y or myCoords[2] or 0.0
-            local z = myCoords.z or myCoords[3] or 0.0
-
-            SetEntityCoords(vehicle, x + math.random(-2,2), y + math.random(-2,2), z, false, false, false, false)
-        end
-    end
-end
-
 
 return Menu
